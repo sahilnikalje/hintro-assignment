@@ -1,190 +1,132 @@
-# TaskBoard — Kanban Task Management App
+# TaskBoard
 
-A modern, feature-rich Kanban-style task board built with **React 18** and **Vite**.  
-Drag and drop tasks between columns, search, filter, sort, and track all activity — all with a premium dark glassmorphism UI.
+A frontend internship assignment — a functional Kanban-style task board with a static login flow, drag-and-drop, and full localStorage persistence.
 
-![React](https://img.shields.io/badge/React-18.3-61DAFB?logo=react&logoColor=white)
-![Vite](https://img.shields.io/badge/Vite-6.0-646CFF?logo=vite&logoColor=white)
-![License](https://img.shields.io/badge/License-MIT-green)
+Built with **React + Vite + JavaScript**.
 
 ---
 
-## ✨ Features
+## Live Demo
 
-### Authentication
-- Static login flow with hardcoded credentials
-- **Email:** `intern@demo.com` | **Password:** `intern123`
-- Remember me functionality
-- Protected routes (redirect to login if unauthenticated)
-- Logout with session cleanup
-
-### Task Board
-- **Three columns:** Todo → Doing → Done
-- **Drag & Drop** tasks between columns (powered by `@hello-pangea/dnd`)
-- **Create / Edit / Delete** tasks with full form validation
-- Each task supports: Title, Description, Priority, Due Date, Tags, CreatedAt
-
-### Search, Filter & Sort
-- 🔍 **Search** tasks by title (real-time)
-- 🏷️ **Filter** by priority (High / Medium / Low)
-- 📅 **Sort** by due date (ascending/descending, empty dates last)
-
-### Persistence & Reliability
-- Board state persists across browser refresh (localStorage)
-- Safe handling of missing or corrupted storage data
-- **Reset Board** with confirmation dialog
-
-### Activity Log
-- Tracks all actions: created, edited, moved, deleted, reset
-- Slide-in panel with relative timestamps
-- Color-coded action types with icons
+> Add your deployed URL here (e.g. Netlify / Vercel)
 
 ---
 
-## 🛠️ Tech Stack
-
-| Technology | Purpose |
-|---|---|
-| React 18 | UI framework |
-| Vite 6 | Build tool & dev server |
-| React Router v6 | Client-side routing |
-| @hello-pangea/dnd | Drag and drop |
-| Lucide React | Icons |
-| Vitest + React Testing Library | Testing |
-| Vanilla CSS | Styling (dark glassmorphism theme) |
-| localStorage | Data persistence |
-
----
-
-## 🚀 Getting Started
-
-### Prerequisites
-
-- **Node.js** ≥ 18.x
-- **npm** ≥ 9.x
-
-### Installation
+## Setup
 
 ```bash
-# Clone the repository
-git clone <repo-url>
+# 1. Clone the repo
+git clone https://github.com/sahilnikalje/hintro-assignment.git
 cd hintro-assignment
 
-# Install dependencies
+# 2. Install dependencies
 npm install
 
-# Start development server
+# 3. Start dev server
 npm run dev
 ```
 
-The app will be available at `http://localhost:5173`
+Open `http://localhost:5173` in your browser.
 
-### Build for Production
+---
 
-```bash
-npm run build
-npm run preview
+## Login Credentials
+
 ```
-
-### Run Tests
-
-```bash
-npm test
+Email:    intern@demo.com
+Password: intern123
 ```
 
 ---
 
-## 📁 Project Structure
+## Features
+
+### Authentication
+- Hardcoded credentials with proper error messages for invalid login
+- "Remember me" — persists email across sessions via localStorage
+- Protected routes — unauthenticated users are redirected to `/login`
+- Logout clears the session
+
+### Task Board
+- Three fixed columns: **Todo**, **Doing**, **Done**
+- Each task supports: Title (required), Description, Priority, Due Date, Tags, and CreatedAt timestamp
+- Create, edit, and delete tasks with confirmation dialogs
+- Drag and drop tasks across columns using `@hello-pangea/dnd`
+- Overdue due dates are highlighted in red
+
+### Filtering & Search
+- Search tasks by title (live filtering)
+- Filter by priority: All / High / Medium / Low
+- Sort by due date — tasks with no due date always appear last
+
+### Persistence
+- Full board state (tasks + activity log) persists across page refreshes via localStorage
+- Auth session persists across refreshes
+- Storage reads/writes are wrapped in safe helpers (handles corrupted or missing data gracefully)
+
+### Activity Log
+- Tracks: task created, edited, deleted, moved between columns, board reset
+- Displays relative timestamps (e.g. "Just now", "5m ago")
+- Capped at the 50 most recent entries
+- Slide-in panel UI
+
+### Other
+- Reset Board with a confirmation dialog — clears all tasks and activity
+- Fully responsive layout (collapses to single column on mobile)
+
+---
+
+## Project Structure
 
 ```
 src/
-├── main.jsx                    # Entry point
-├── App.jsx                     # Router & providers setup
-├── index.css                   # Global styles & design system
-├── contexts/
-│   ├── AuthContext.jsx         # Authentication state management
-│   └── BoardContext.jsx        # Board state with useReducer
 ├── components/
-│   ├── LoginPage.jsx           # Login form with validation
-│   ├── ProtectedRoute.jsx      # Route guard
-│   ├── BoardPage.jsx           # Main board with DragDropContext
-│   ├── Header.jsx              # Search, filter, sort, actions
-│   ├── Column.jsx              # Droppable column container
-│   ├── TaskCard.jsx            # Draggable task card
-│   ├── TaskModal.jsx           # Create/Edit task modal
-│   ├── ActivityLog.jsx         # Activity history panel
-│   └── ConfirmDialog.jsx       # Reusable confirmation dialog
+│   ├── LoginPage.jsx       # Login form with remember me + validation
+│   ├── BoardPage.jsx       # Main board layout + drag-and-drop context
+│   ├── Header.jsx          # Search, filter, sort, activity toggle, reset
+│   ├── Column.jsx          # Droppable column wrapper
+│   ├── TaskCard.jsx        # Draggable task card with edit/delete
+│   ├── TaskModal.jsx       # Create / edit task form
+│   ├── ActivityLog.jsx     # Slide-in activity panel
+│   ├── ConfirmDialog.jsx   # Reusable confirmation modal
+│   └── ProtectedRoute.jsx  # Auth guard for /board
+├── contexts/
+│   ├── AuthContext.jsx     # Login, logout, session state
+│   └── BoardContext.jsx    # Task CRUD, move, filter, sort — via useReducer
 ├── utils/
-│   ├── storage.js              # Safe localStorage wrappers
-│   └── constants.js            # App constants & config
-└── __tests__/
-    ├── auth.test.jsx           # Authentication tests
-    ├── board.test.jsx          # Board CRUD tests
-    └── storage.test.js         # Storage utility tests
+│   ├── constants.js        # Column config, priorities, credentials, storage keys
+│   └── storage.js          # Safe localStorage helpers
+
 ```
 
 ---
 
-## 🏗️ Architecture & Design Decisions
+## State Management
 
-### State Management
-- **AuthContext** — React Context for authentication state (login, logout, session persistence)
-- **BoardContext** — React Context + `useReducer` for complex board state (tasks, columns, activity log)
-- All state changes are automatically persisted to `localStorage` via `useEffect`
+Board state is managed with `useReducer` inside `BoardContext`. Actions:
 
-### Component Design
-- **Reusable components** — `ConfirmDialog` is used for both task deletion and board reset
-- **Smart/dumb separation** — `BoardPage` orchestrates state, child components receive data via props
-- **Form validation** — `TaskModal` validates required fields with error messages
-
-### Drag & Drop
-- Uses `@hello-pangea/dnd` (maintained fork of `react-beautiful-dnd`)
-- Supports reordering within columns and moving between columns
-- Visual feedback with highlight and rotation during drag
-
-### Styling
-- **Vanilla CSS** with CSS custom properties for theming
-- **Dark glassmorphism** design with backdrop-filter and semi-transparent backgrounds
-- **Responsive** — works on desktop, tablet, and mobile
-- **Micro-animations** — card hover effects, modal transitions, shake on error
-
----
-
-## 🧪 Testing
-
-3 test suites with 10+ combined test cases:
-
-| Suite | Tests |
+| Action | Description |
 |---|---|
-| `auth.test.jsx` | Login form rendering, invalid credentials error, session persistence |
-| `board.test.jsx` | Add task, edit task, delete task |
-| `storage.test.js` | Missing keys, corrupted JSON, round-trip persistence |
+| `ADD_TASK` | Adds a task to a column and logs it |
+| `EDIT_TASK` | Updates task fields and logs it |
+| `DELETE_TASK` | Removes a task and logs it |
+| `MOVE_TASK` | Moves a task between columns and logs it |
+| `RESET_BOARD` | Clears all columns and resets the activity log |
 
-Run with: `npm test`
-
----
-
-## 📦 Deployment
-
-This project is deployed at: *[Add deployed URL here]*
-
-To deploy:
-1. `npm run build` — generates static files in `dist/`
-2. Deploy the `dist/` folder to any static hosting (Vercel, Netlify, GitHub Pages)
-
-For **Vercel**:
-```bash
-npm i -g vercel
-vercel
-```
-
-For **Netlify**, add a `_redirects` file in `public/`:
-```
-/*    /index.html   200
-```
+Filtered/sorted columns are derived with `useMemo` — no duplicated state.
 
 ---
 
-## 📝 License
 
-MIT
+## Tech Stack
+
+| Layer | Library |
+|---|---|
+| Framework | React 18 |
+| Bundler | Vite |
+| Routing | React Router v6 |
+| Drag & Drop | @hello-pangea/dnd |
+| Icons | lucide-react |
+| Testing | Vitest + React Testing Library |
+| Styling | Plain CSS (custom design system, no Tailwind) |
+| Persistence | localStorage |
